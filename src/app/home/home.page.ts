@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AdminCrudService } from '../services/admin-crud.service';
+import { AuthenticateService } from '../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -7,14 +9,23 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
 
-  constructor() {
-    this.getData();
-  }
+  constructor(
+    private crudService: AdminCrudService,
+    private authService: AuthenticateService
+  ) { }
+    fazerLogin(dados: any)  {
+      this.authService.login(dados.email, dados.senha);
+    }
 
-  getData(){
-    fetch('http://localhost/api/usuario/listar-todos')
-    // .then(T => T.json())
-    .then(console.log)
-  }
+    criarConta(dados: any){
+    this.authService.register(dados.email, dados.senha)
+    }
 
+    inserirAluno(dados: any){
+      this.crudService.insert(dados, 'alunos')
+    }
+
+    removerAluno(){
+      this.crudService.remove('1','alunos');
+    }
 }
